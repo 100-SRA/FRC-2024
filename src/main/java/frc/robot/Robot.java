@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -20,6 +23,16 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  // Set up joystick input objects
+  private final Joystick m_joystick0 = new Joystick(0);
+  // private final Joystick m_joystick1 = new Joystick(1);
+
+  // set up PWM for drivetrain motors
+  private final PWMSparkMax m_leftDrive = new PWMSparkMax(0);
+  private final PWMSparkMax m_rightDrive = new PWMSparkMax(1);
+  private final DifferentialDrive m_robotDrive =
+      new DifferentialDrive(m_leftDrive::set, m_rightDrive::set);
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -29,6 +42,8 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    m_rightDrive.setInverted(true);
   }
 
   /**
@@ -78,7 +93,16 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    /* Joystick setup:
+     * - Y axis is negative when pushed forward, positive when pulled back
+     * - X axis is positive when pushed to the right, negative when pushed to the left
+     * 
+     * Curvature drive setup:
+     * - Robot X axis (joystick sees this as Y) is positive-forward, negative backwards
+     * - Robot Z rotation is positive for counter-clockwise, negative for clockwise */
+    m_robotDrive.curvatureDrive(-m_joystick0.getY(), -m_joystick0.getX(), true);
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
