@@ -24,9 +24,9 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandJoystick m_driverJoystickA =
-      new CommandJoystick(OperatorConstants.kDriverJoystickAPort);
+      new CommandJoystick(OperatorConstants.kPortUSB_DriverJoystick_A);
     private final CommandJoystick m_driverJoystickB =
-      new CommandJoystick(OperatorConstants.kDriverJoystickBPort);
+      new CommandJoystick(OperatorConstants.kPortUSB_DriverJoystick_B);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

@@ -18,7 +18,19 @@ public final class Constants {
      * Joystick A => drivetrain controls
      * Joystick B => arm controls
      */
-    public static final int kDriverJoystickAPort = 0;
-    public static final int kDriverJoystickBPort = 0;
+    public static final int kPortUSB_DriverJoystick_A = 0;
+    public static final int kPortUSB_DriverJoystick_B = 1;
+  }
+
+  public static class DriveConstants {
+    /* PWM Ports for drivetrain motor controllers */
+    public static final int kPortPWM_Drivetrain_L = 0;
+    public static final int kPortPWM_Drivetrain_R = 1;  
+  }
+
+  public static class ArmConstants {
+    /* PWM Ports for arm lifter motor controllers */
+    public static final int kPortPWM_ArmLift_L = 2;
+    public static final int kPortPWM_ArmLift_R = 3;
   }
 }
