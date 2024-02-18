@@ -41,23 +41,25 @@ public class RobotContainer {
     // Configure default commands
     // Set default drive command to single-stick arcadge drive
     m_robotDrive.setDefaultCommand(
-        Commands.parallel(
-          /**
-           * Single-stick arcade command, with forward/backward 
-           * and turning controlled by different axes of the first joystick.
-           */
-          new DefaultDrive(
-              m_robotDrive,
-              () -> -m_driverJoystickA.getY(),
-              () -> -m_driverJoystickA.getX()),
-          /**
+      /**
+         * Single-stick arcade command, with forward/backward 
+         * and turning controlled by different axes of the first joystick.
+         */
+        new DefaultDrive(
+            m_robotDrive,
+            () -> -m_driverJoystickA.getY(),
+            () -> -m_driverJoystickA.getX()));
+
+    m_armLift.setDefaultCommand(
+      Commands.parallel(
+        /**
            * Control the angle of the arm with the second joystick, limiting its speed to 0.5.
            */
           new DefaultArmLift(
             m_armLift,
             () -> -m_driverJoystickB.getY()),
           new LimitArmSpeed(m_armLift)
-        )
+      )
     );
   }
 
