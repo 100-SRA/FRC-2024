@@ -9,11 +9,14 @@ import frc.robot.commands.DefaultArmLift;
 // import frc.robot.commands.Autos;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.LimitArmSpeed;
+import frc.robot.commands.ReverseDriveDirection;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Commands;
 // import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -80,6 +83,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     // m_driverJoystickA.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    new JoystickButton(m_driverJoystickA.getHID(), 2).onTrue(new ReverseDriveDirection(m_robotDrive));
   }
 
   /**

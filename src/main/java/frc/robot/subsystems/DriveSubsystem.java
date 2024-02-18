@@ -13,6 +13,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     private final DifferentialDrive m_drive = new DifferentialDrive(m_leftDrive::set, m_rightDrive::set);
 
+    private boolean m_IsReversed = false;
+
     // TODO(malik): add encoder setup here
 
     /* Create new drive subsystem */
@@ -32,8 +34,16 @@ public class DriveSubsystem extends SubsystemBase {
      * @param rotation commanded rotation movement
      */
     public void arcadeDrive(double forward, double rotation) {
+        if (m_IsReversed){
+            forward = forward * -1;
+        }
         m_drive.arcadeDrive(forward, rotation);
     }
 
     /* TODO(malik): consider adding a control to change the max speed */
+
+    /* TODO(Julius): update drive subsystem to inverse wheel direction  */
+    public void toggleReversed(){
+        m_IsReversed = !m_IsReversed;
+    }
 }
