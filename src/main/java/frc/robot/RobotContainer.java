@@ -5,9 +5,13 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.DefaultArmLift;
 // import frc.robot.commands.Autos;
 import frc.robot.commands.DefaultDrive;
+import frc.robot.commands.LimitArmSpeed;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj2.command.Commands;
 // import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -21,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ArmSubsystem m_armLift = new ArmSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandJoystick m_driverJoystickA =
@@ -36,13 +41,24 @@ public class RobotContainer {
     // Configure default commands
     // Set default drive command to single-stick arcadge drive
     m_robotDrive.setDefaultCommand(
-        /* Single-stick arcade command, with forward/backward 
-         * and turning controlled by different axes of the joystick.
-        */
-        new DefaultDrive(
-            m_robotDrive,
-            () -> -m_driverJoystickA.getY(),
-            () -> -m_driverJoystickA.getX()));
+        Commands.parallel(
+          /**
+           * Single-stick arcade command, with forward/backward 
+           * and turning controlled by different axes of the first joystick.
+           */
+          new DefaultDrive(
+              m_robotDrive,
+              () -> -m_driverJoystickA.getY(),
+              () -> -m_driverJoystickA.getX()),
+          /**
+           * Control the angle of the arm with the second joystick, limiting its speed to 0.5.
+           */
+          new DefaultArmLift(
+            m_armLift,
+            () -> -m_driverJoystickB.getY()),
+          new LimitArmSpeed(m_armLift)
+        )
+    );
   }
 
   /**
