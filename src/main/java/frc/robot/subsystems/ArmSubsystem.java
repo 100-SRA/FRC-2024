@@ -4,14 +4,15 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
-    // Left and Right motors
-    private final PWMSparkMax m_armMotorLeft = new PWMSparkMax(ArmConstants.kPortPWM_ArmLift_L);
-    private final PWMSparkMax m_armMotorRight = new PWMSparkMax(ArmConstants.kPortPWM_ArmLift_R);
+    // Left and Right motors are brushless NEO motors connected using CAN
+    private final CANSparkMax m_armMotorLeft = new CANSparkMax(ArmConstants.kIdCAN_ArmLift_L, MotorType.kBrushless);
+    private final CANSparkMax m_armMotorRight = new CANSparkMax(ArmConstants.kIdCAN_ArmLift_R, MotorType.kBrushless);
 
     // Default max output is 100%
     private double m_maxOutput = 1.0;

@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 /**
@@ -19,11 +20,13 @@ public class LimitArmSpeed extends Command {
 
     @Override
     public void initialize() {
-        m_arm.setMaxOutput(0.5);
+        // Limit the max speed of the arm so we have more control
+        m_arm.setMaxOutput(ArmConstants.kArmMaxSpeed);
     }
 
     @Override
     public void end(boolean interrupted) {
+        // Return the max speed to 100%
         m_arm.setMaxOutput(1.0);
     }
     // adding something random
