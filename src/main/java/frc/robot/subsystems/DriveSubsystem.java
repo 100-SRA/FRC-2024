@@ -49,7 +49,7 @@ public class DriveSubsystem extends SubsystemBase {
     public void toggleReversed(){
         m_IsReversed = !m_IsReversed;
     }
-    public void setSpeedmultipler (double speed) {
+    public void setSpeedmultiplier (double speed) {
         m_SpeedMultiplier = speed;
     }
 }
