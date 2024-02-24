@@ -4,14 +4,13 @@
 
 package frc.robot;
 
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.DefaultArmLift;
 import frc.robot.commands.DefaultDrive;
-import frc.robot.commands.LimitArmSpeed;
 import frc.robot.commands.ReverseDriveDirection;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -44,29 +43,28 @@ public class RobotContainer {
     // Configure default commands
     // Set default drive command to single-stick arcadge drive
     m_robotDrive.setDefaultCommand(
-            /**
-             * Single-stick arcade command, with forward/backward
-             * and turning controlled by different axes of the first joystick.
-             * Speed control via the Z axis (dial at the base of the joystick).
-             */
-             new DefaultDrive(
-                m_robotDrive,
-                () -> -m_driverJoystickA.getY(),
-                () -> -m_driverJoystickA.getX(),
-                () -> m_driverJoystickA.getZ())
-            
+        /**
+         * Single-stick arcade command, with forward/backward
+         * and turning controlled by different axes of the first joystick.
+         * Speed control via the Z axis (dial at the base of the joystick).
+         */
+        new DefaultDrive(
+            m_robotDrive,
+            () -> -m_driverJoystickA.getY(),
+            () -> -m_driverJoystickA.getX(),
+            () -> m_driverJoystickA.getZ())
+
     );
 
     m_armLift.setDefaultCommand(
-        Commands.parallel(
-            /**
-             * Control the angle of the arm with the second joystick, limiting its speed to
-             * 0.5.
-             */
-            new DefaultArmLift(
-                m_armLift,
-                () -> -m_driverJoystickB.getY()),
-            new LimitArmSpeed(m_armLift)));
+        /**
+         * Control the angle of the arm with the second joystick, limiting its speed
+         * based on the dial at the base of the joystick (Z axis).
+         */
+        new DefaultArmLift(
+            m_armLift,
+            () -> -m_driverJoystickB.getY(),
+            () -> m_driverJoystickB.getZ()));
   }
 
   /**
@@ -92,7 +90,8 @@ public class RobotContainer {
     // pressed,
     // cancelling on release.
     // m_driverJoystickA.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    new JoystickButton(m_driverJoystickA.getHID(), 2).onTrue(new ReverseDriveDirection(m_robotDrive));
+    new JoystickButton(m_driverJoystickA.getHID(), DriveConstants.kButton_ReverseDriveDirection)
+        .onTrue(new ReverseDriveDirection(m_robotDrive));
   }
 
   /**

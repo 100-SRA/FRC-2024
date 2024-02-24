@@ -15,7 +15,7 @@ public class ArmSubsystem extends SubsystemBase {
     private final CANSparkMax m_armMotorRight = new CANSparkMax(ArmConstants.kIdCAN_ArmLift_R, MotorType.kBrushless);
 
     // Default max output is 100%
-    private double m_maxOutput = 1.0;
+    private double m_speedMultiplier = 1.0;
 
     public ArmSubsystem() {
         // Motors facing different directions
@@ -24,13 +24,13 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void liftArm(double speed) {
         // Both motors need to move at the same speed
-        speed = speed * m_maxOutput;
+        speed = speed * m_speedMultiplier;
         m_armMotorLeft.set(speed);
         m_armMotorRight.set(speed);
     }
 
     /* Limit the maximum output of the motors -> for testing mostly */
-    public void setMaxOutput(double maxOutput) {
-        m_maxOutput = maxOutput;
+    public void setSpeedMultiplier(double speed) {
+        m_speedMultiplier = speed;
     }
 }
