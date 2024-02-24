@@ -14,7 +14,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final DifferentialDrive m_drive = new DifferentialDrive(m_leftDrive::set, m_rightDrive::set);
 
     private boolean m_IsReversed = false;
-
+    private double m_SpeedMultiplier = 1.0; 
     // TODO(malik): add encoder setup here
 
     /* Create new drive subsystem */
@@ -37,7 +37,10 @@ public class DriveSubsystem extends SubsystemBase {
         if (m_IsReversed){
             forward = forward * -1;
         }
+        forward = forward * m_SpeedMultiplier;
+        rotation = rotation * m_SpeedMultiplier;
         m_drive.arcadeDrive(forward, rotation);
+        
     }
 
     /* TODO(malik): consider adding a control to change the max speed */
@@ -46,4 +49,8 @@ public class DriveSubsystem extends SubsystemBase {
     public void toggleReversed(){
         m_IsReversed = !m_IsReversed;
     }
+    public void setSpeedmultipler (double speed) {
+        m_SpeedMultiplier = speed;
+    }
 }
+ 
