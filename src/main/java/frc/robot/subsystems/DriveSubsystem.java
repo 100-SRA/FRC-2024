@@ -43,9 +43,6 @@ public class DriveSubsystem extends SubsystemBase {
         
     }
 
-    /* TODO(malik): consider adding a control to change the max speed */
-
-    /* TODO(Julius): update drive subsystem to inverse wheel direction  */
     public void toggleReversed(){
         m_IsReversed = !m_IsReversed;
     }
