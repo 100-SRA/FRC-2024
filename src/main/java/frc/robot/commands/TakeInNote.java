@@ -1,32 +1,32 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.NoteIntakeSubsystem;
 
-public class StartIntake extends Command{
-    private final ArmSubsystem m_ArmSubsystem;
+public class TakeInNote extends Command{
+    private final NoteIntakeSubsystem m_intakeSubsystem;
     
-    public StartIntake(ArmSubsystem subsystem){
-        m_ArmSubsystem = subsystem;
-        addRequirements(m_ArmSubsystem);
+    public TakeInNote(NoteIntakeSubsystem subsystem){
+        m_intakeSubsystem = subsystem;
+        addRequirements(m_intakeSubsystem);
     }
 
     /*called the activate intake for the arm subsystem, once called it runs until the button is pressed to stop */
     @Override 
     public void initialize(){
-        m_ArmSubsystem.activateIntake();
+        m_intakeSubsystem.activateIntake();
     }
 
     /* ensuring that the command caller knows that the function has been ran. another function that ensures the motors completely stop spinning once the button is pressed again.*/
     @Override 
     public boolean isFinished(){
-        return true; 
+        return false; 
     } 
 
     /* following the structure of the command properties overriding the interrupted func. */
     @Override
     public void end(boolean interrupted){
-        m_ArmSubsystem.deactivateIntake();
+        m_intakeSubsystem.deactivateIntake();
     } 
 
 } 

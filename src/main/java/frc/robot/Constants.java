@@ -41,12 +41,23 @@ public final class Constants {
     /* CAN ids for arm lifter motor controllers */
     public static final int kCANid_ArmLift_L = 2;
     public static final int kCANid_ArmLift_R = 1;
+  }
 
+  public static class NoteThrowerConstants {
+    /* CAN ids for arm throwing wheel motor controllers.
+     * These numbers come directly from the wiring of the robot.
+    */
+    // public static final int kCANid_ThrowerWheels_Top = 4;
+    // public static final int kCANid_ThrowerWheels_Bottom = 5;
+    public static final int kPortPWM_ThrowerWheels_Top = 2;
+    public static final int kPortPWM_ThrowerWheels_Bottom = 3;
+  }
+
+  public static class NoteIntakeConstants {
     /* CAN id for arm intake motor controllers */
     public static final int kCANid_Intake = 3;
 
-    /* CAN id for arm throwing wheel motor controllers */
-    public static final int kCANid_ThrowerWheels_Top = 4;
-    public static final int kCANid_ThrowerWheels_Bottom = 5;
+    /* Power of the note intake motor */
+    public static final double kIntakePower = 0.8;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
   }
 }
