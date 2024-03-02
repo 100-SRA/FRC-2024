@@ -25,21 +25,28 @@ public final class Constants {
      */
     public static final int kPortUSB_DriverJoystick_A = 0;
     public static final int kPortUSB_DriverJoystick_B = 1;
+
+    /* Bindings */
+    public static final int kButton_Trigger = 1;
+    public static final int kButton_Two = 2;
   }
 
   public static class DriveConstants {
     /* PWM Ports for drivetrain motor controllers */
     public static final int kPortPWM_Drivetrain_L = 0;
     public static final int kPortPWM_Drivetrain_R = 1;
-
-    /* Bindings */
-    public static final int kButton_ReverseDriveDirection = 2;
   }
 
   public static class ArmConstants {
-    /* PWM Ports for arm lifter motor controllers */
-    public static final int kIdCAN_Intake = 3;
-    public static final int kIdCAN_ArmLift_L = 2;
-    public static final int kIdCAN_ArmLift_R = 1;
+    /* CAN ids for arm lifter motor controllers */
+    public static final int kCANid_ArmLift_L = 2;
+    public static final int kCANid_ArmLift_R = 1;
+
+    /* CAN id for arm intake motor controllers */
+    public static final int kCANid_Intake = 3;
+
+    /* CAN id for arm throwing wheel motor controllers */
+    public static final int kCANid_ThrowerWheels_Top = 4;
+    public static final int kCANid_ThrowerWheels_Bottom = 5;
   }
 }
