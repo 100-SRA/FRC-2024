@@ -10,11 +10,24 @@ public class NoteIntakeSubsystem extends SubsystemBase {
     // Motor to spin the intake wheels
     private final CANSparkMax m_intakeMotor = new CANSparkMax(NoteIntakeConstants.kCANid_Intake, MotorType.kBrushless);
 
+    private boolean reversed = false;
+
+    /* Run the intake wheel motor at the given speed, reversing if necessary */
     public void activateIntake() {
-        m_intakeMotor.set(NoteIntakeConstants.kIntakePower);
+        double speed = NoteIntakeConstants.kIntakePower;
+        if (reversed) {
+            speed = speed * -1;
+        }
+        m_intakeMotor.set(speed);
     }
 
+    /* Return the intake wheels to standby */
     public void deactivateIntake() {
         m_intakeMotor.set(0);
+    }
+
+    /* Flip the intake wheel direction */
+    public void toggleDirection() {
+        reversed = !reversed;
     }
 }

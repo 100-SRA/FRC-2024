@@ -29,6 +29,7 @@ public final class Constants {
     /* Bindings */
     public static final int kButton_Trigger = 1;
     public static final int kButton_Two = 2;
+    public static final int kButton_Three = 3;
   }
 
   public static class DriveConstants {
