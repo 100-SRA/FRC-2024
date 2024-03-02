@@ -9,6 +9,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.DefaultArmLift;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.ReverseDriveDirection;
+import frc.robot.commands.StartIntake;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -92,6 +93,10 @@ public class RobotContainer {
     // m_driverJoystickA.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     new JoystickButton(m_driverJoystickA.getHID(), DriveConstants.kButton_ReverseDriveDirection)
         .onTrue(new ReverseDriveDirection(m_robotDrive));
+    
+    new JoystickButton(m_driverJoystickB.getHID(), DriveConstants.kButton_ReverseDriveDirection)
+        .whileTrue(new StartIntake(m_armLift));
+        
   }
 
   /**
