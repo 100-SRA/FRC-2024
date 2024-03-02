@@ -13,6 +13,7 @@ public class ArmSubsystem extends SubsystemBase {
     // Left and Right motors are brushless NEO motors connected using CAN
     private final CANSparkMax m_armMotorLeft = new CANSparkMax(ArmConstants.kIdCAN_ArmLift_L, MotorType.kBrushless);
     private final CANSparkMax m_armMotorRight = new CANSparkMax(ArmConstants.kIdCAN_ArmLift_R, MotorType.kBrushless);
+    private final CANSparkMax m_intakeMotor = new CANSparkMax(ArmConstants.kIdCAN_Intake, MotorType.kBrushless);
 
     // Default max output is 100%
     private double m_speedMultiplier = 1.0;
@@ -32,5 +33,13 @@ public class ArmSubsystem extends SubsystemBase {
     /* Limit the maximum output of the motors -> for testing mostly */
     public void setSpeedMultiplier(double speed) {
         m_speedMultiplier = speed;
+    }
+
+    public void activateIntake(){
+        m_intakeMotor.set(0.25);
+    }
+
+    public void deactivateIntake(){
+        m_intakeMotor.set(0);
     }
 }

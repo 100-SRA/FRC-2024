@@ -38,6 +38,7 @@ public final class Constants {
 
   public static class ArmConstants {
     /* PWM Ports for arm lifter motor controllers */
+    public static final int kIdCAN_Intake = 3;
     public static final int kIdCAN_ArmLift_L = 2;
     public static final int kIdCAN_ArmLift_R = 1;
   }
