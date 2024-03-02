@@ -7,16 +7,16 @@ import frc.robot.subsystems.NoteThrowerSubsystem;
  * Command to start the thrower wheels spinning to launch a note.
  */
 public class ThrowNote extends Command {
-    private final NoteThrowerSubsystem m_armSubsystem;
+    private final NoteThrowerSubsystem m_throwerSubsystem;
 
     public ThrowNote(NoteThrowerSubsystem subsystem) {
-        m_armSubsystem = subsystem;
-        addRequirements(m_armSubsystem);
+        m_throwerSubsystem = subsystem;
+        addRequirements(m_throwerSubsystem);
     }
 
     @Override
     public void initialize() {
-        m_armSubsystem.spinThrowers();
+        m_throwerSubsystem.spinThrowers();
     }
 
     @Override
@@ -26,6 +26,6 @@ public class ThrowNote extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        m_armSubsystem.stopThrowers();
+        m_throwerSubsystem.stopThrowers();
     }
 }
