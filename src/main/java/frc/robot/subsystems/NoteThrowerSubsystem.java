@@ -17,6 +17,9 @@ public class NoteThrowerSubsystem extends SubsystemBase {
     private final PWMSparkMax m_throwerWheelsMotor_Bottom = new PWMSparkMax(
             NoteThrowerConstants.kPortPWM_ThrowerWheels_Bottom);
 
+    /* Variable speed for better control of shooting */
+    private double m_speed = 1.0;
+
     public NoteThrowerSubsystem() {
         // Thrower wheel motors need to spin in opposite directions so reverse one of
         // them
@@ -25,15 +28,18 @@ public class NoteThrowerSubsystem extends SubsystemBase {
 
     /* Spin the thrower wheels at their current speed factor */
     public void spinThrowers() {
-        double throwerSpeed;
-        throwerSpeed = 0.5; // TODOs(malik): set up variable thrower wheel speeds
-        m_throwerWheelsMotor_Bottom.set(throwerSpeed);
-        m_throwerWheelsMotor_Top.set(throwerSpeed);
+        m_throwerWheelsMotor_Bottom.set(m_speed);
+        m_throwerWheelsMotor_Top.set(m_speed);
     }
 
     /* Stop the thrower wheels from spinning */
     public void stopThrowers() {
         m_throwerWheelsMotor_Bottom.set(0);
         m_throwerWheelsMotor_Top.set(0);
+    }
+
+    /* Modify the launch speed of the wheels */
+    public void setSpeed(double speed) {
+        m_speed = speed;
     }
 }

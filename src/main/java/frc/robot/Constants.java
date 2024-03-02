@@ -41,6 +41,9 @@ public final class Constants {
     /* CAN ids for arm lifter motor controllers */
     public static final int kCANid_ArmLift_L = 2;
     public static final int kCANid_ArmLift_R = 1;
+
+    /* Arm speed */
+    public static final double kArmAngleSpeed = 0.6;
   }
 
   public static class NoteThrowerConstants {
