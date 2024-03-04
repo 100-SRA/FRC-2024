@@ -20,9 +20,9 @@ public class NoteThrowerSubsystem extends SubsystemBase {
     /* Variable speed for better control of shooting */
     private double m_speed = 1.0;
 
+    /* Constructor to invert both the thrower wheel motors */
     public NoteThrowerSubsystem() {
-        // Thrower wheel motors need to spin in opposite directions so reverse one of
-        // them
+        m_throwerWheelsMotor_Bottom.setInverted(true);
         m_throwerWheelsMotor_Top.setInverted(true);
     }
 
