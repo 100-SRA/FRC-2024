@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.Units.*;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -44,7 +49,25 @@ public final class Constants {
     public static final int kCANid_ArmLift_R = 1;
 
     /* Arm speed */
-    public static final double kArmAngleSpeed = 0.6;
+    public static final double kArmAngleSpeed = 1.0;
+
+    /* Encoder digital I/O port */
+    public static final int kArmEncoderDIOPort = 5;
+
+    /* PID control constants */
+    public static final double kPID_proportional = 1.0;
+    public static final double kPID_integral = 0.0;
+    public static final double kPID_derivative = 0.0;
+
+    /* Movement constraint constants */
+    public static final double kArmMaxVelocity = 1.0;
+    public static final double kArmMaxAcceleration = 1.0;
+
+    /* Arm angles for different tasks */
+    public static final Measure<Angle> kArmAngle_Start = Units.Degrees.of(90);
+    public static final Measure<Angle> kArmAngle_ThrowLow = Units.Degrees.of(45);
+    public static final Measure<Angle> kArmAngle_ThrowHigh = Units.Degrees.of(25);
+    public static final Measure<Angle> kArmAngle_Intake = Units.Degrees.of(5);
   }
 
   public static class NoteThrowerConstants {
