@@ -4,10 +4,12 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.DefaultArmLift;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.ReverseDriveDirection;
+import frc.robot.commands.SetArmPosition;
 import frc.robot.commands.SpinIntake;
 import frc.robot.commands.SwitchIntakeDirection;
 import frc.robot.commands.ThrowNote;
@@ -16,6 +18,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteIntakeSubsystem;
 import frc.robot.subsystems.NoteThrowerSubsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -49,7 +52,7 @@ public class RobotContainer {
                 configureBindings();
 
                 // Configure default commands
-                // Set default drive command to single-stick arcadge drive
+                // Set default drive command to single-stick arcade drive 
                 m_drivetrainSystem.setDefaultCommand(
                                 /**
                                  * Single-stick arcade command, with forward/backward
@@ -92,6 +95,25 @@ public class RobotContainer {
                 new JoystickButton(m_driverJoystickA.getHID(), OperatorConstants.kButton_Two)
                                 .onTrue(new ReverseDriveDirection(m_drivetrainSystem));
 
+                /* todo map 4 commands for the general presets, the 4 and 5 joystick buttons, and buttons 6 and 7 for the other two presets */
+
+                /*command one for high tower shooter preset, appending it to "4" joystick button */
+                new JoystickButton(m_driverJoystickA.getHID(), OperatorConstants.kButton_Four)
+                                .onTrue(new SetArmPosition(m_armSystem, ArmConstants.kArmAngle_ThrowHigh));
+                
+                /* command two for low tower shooter preset, appending to "5" joystick button */
+                new JoystickButton(m_driverJoystickA.getHID(), OperatorConstants.kButton_Five)
+                                .onTrue(new SetArmPosition(m_armSystem, ArmConstants.kArmAngle_ThrowLow));
+                
+                /* command three for start angle, appending to button 6 */
+                new JoystickButton(m_driverJoystickA.getHID(), OperatorConstants.kButton_Six)
+                                .onTrue(new SetArmPosition(m_armSystem, ArmConstants.kArmAngle_Start));
+
+                /* command four for intake arm angle apending to button 7 */
+                new JoystickButton(m_driverJoystickA.getHID(), OperatorConstants.kButton_Seven)
+                                .onTrue(new SetArmPosition(m_armSystem, ArmConstants.kArmAngle_Intake));
+
+
                 /*
                  * Command to spin the intake wheels while holding a button down on joystick B
                  */
@@ -112,6 +134,7 @@ public class RobotContainer {
                                 .whileTrue(new ThrowNote(m_throwerSystem, () -> m_driverJoystickB.getZ()));
         }
 
+// side joysticks buttons are buttons 6 and 7
         /**
          * Use this to pass the autonomous command to the main {@link Robot} class.
          *
