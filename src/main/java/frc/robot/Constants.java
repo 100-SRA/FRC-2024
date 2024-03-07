@@ -56,7 +56,8 @@ public final class Constants {
     public static final double kArmAngleSpeed = 1.0;
 
     /* Encoder digital I/O port */
-    public static final int kArmEncoderDIOPort = 5;
+    public static final int kArmEncoderDIOPortA = 5;
+    public static final int kArmEncoderDIOPortB = 6;
 
     /* PID control constants */
     public static final double kPID_proportional = 1.0;
@@ -66,6 +67,15 @@ public final class Constants {
     /* Movement constraint constants */
     public static final double kArmMaxVelocity = 1.0;
     public static final double kArmMaxAcceleration = 1.0;
+
+    /* Quadrature encoder measurements
+     *
+     * REV Through bore encoders in quadrature mode by default have 2048 pulses (or cycles) per revolution.
+     * To measure angular distance we must calculate the number of degrees per pulse (or cycle):
+     * 360deg/revolution * 1revolution/2048cycles ==> 0.17578125 degrees/cycle
+     * (we can keep this as a fraction in our variable definition)
+     */
+    public static final double kArmEncoderDegreesPerCycle = 360 / 2048;
 
     /* Arm angles for different tasks */
     public static final Measure<Angle> kArmAngle_Start = Units.Degrees.of(90);

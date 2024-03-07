@@ -16,8 +16,13 @@ public class SetArmPosition extends Command {
     }
 
     @Override
-    public void execute() {
+    public void initialize() {
         m_arm.setGoal(m_position.magnitude());
         m_arm.enable();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return true;
     }
 }

@@ -5,9 +5,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.Encoder;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import frc.robot.Constants.ArmConstants;
@@ -19,9 +20,10 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
     private final CANSparkMax m_armLiftMotor_Right = new CANSparkMax(ArmConstants.kCANid_ArmLift_R,
             MotorType.kBrushless);
 
-    // Duty cycle (absolute) encoder connected to the arm
-    // The absolute encoder will enable us to get the absolute angle of the arm
-    private final DutyCycleEncoder m_encoder = new DutyCycleEncoder(ArmConstants.kArmEncoderDIOPort);
+    // Quadrature (relative) encoder connected to the arm
+    // Relative encoders start out at a reading of 0.0 and reset to 0.0 every time you call reset()
+    // They measure change in rotation from the 0 point
+    private final Encoder m_encoder = new Encoder(ArmConstants.kArmEncoderDIOPortA, ArmConstants.kArmEncoderDIOPortB);
 
     public ArmSubsystem() {
         super(
@@ -39,8 +41,8 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
         // Arm lift motors are facing different directions so reverse one of them
         m_armLiftMotor_Right.setInverted(true);
 
-        // Set up encoder to use degrees [0, 360] as angular distance rather than [0, 1]
-        m_encoder.setDistancePerRotation(360.0);
+        // Set the encoder to output angular distance in degrees
+        m_encoder.setDistancePerPulse(ArmConstants.kArmEncoderDegreesPerCycle);
 
         // Start the arm out at the initial position (vertical to remain within vertical bounding box of bumpers)
         setGoal(ArmConstants.kArmAngle_Start.magnitude());
@@ -52,8 +54,9 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
         // setpoint holds the target position and velocity of the arm
         
         // TODO(Malik): determine if we need to use the setpoint value here or not
-        m_armLiftMotor_Left.set(output);
-        m_armLiftMotor_Right.set(output);
+        double simpleFeedForward = Math.max(Math.min(getMeasurement() - setpoint.position, 0.1), -0.1);
+        m_armLiftMotor_Left.set(output + simpleFeedForward);
+        m_armLiftMotor_Right.set(output + simpleFeedForward);
     }
 
     @Override
