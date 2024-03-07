@@ -36,6 +36,16 @@ public final class Constants {
     /* PWM Ports for drivetrain motor controllers */
     public static final int kPortPWM_Drivetrain_L = 0;
     public static final int kPortPWM_Drivetrain_R = 1;
+
+    /* Drivetrain encoder setup */
+    public static final int kEncoderPorts_Left[] = {0, 1};
+    public static final int kEncoderPorts_Right[] = {2, 3};
+    public static final boolean kEncoderReversed_Left = false;
+    public static final boolean kEncoderReversed_Right = true;
+    public static final int kEncoderCPR = 2048;
+    public static final double kWheelDiameterMeters = 0.1524;
+    // Encoders directly on the wheel shaft
+    public static final double kEncoderDistancePerPulse = (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
   }
 
   public static class ArmConstants {

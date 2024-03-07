@@ -1,6 +1,12 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.units.Distance;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.util.sendable.SendableRegistry;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,7 +21,19 @@ public class DriveSubsystem extends SubsystemBase {
 
     private boolean m_IsReversed = false;
     private double m_SpeedMultiplier = 1.0;
-    // TODO(malik): add encoder setup here
+    
+    // Left and right side drive encoders
+    private final Encoder m_encoderLeft = new Encoder(
+        DriveConstants.kEncoderPorts_Left[0],
+        DriveConstants.kEncoderPorts_Left[1],
+        DriveConstants.kEncoderReversed_Left);
+    private final Encoder m_encoderRight = new Encoder(
+        DriveConstants.kEncoderPorts_Right[0],
+        DriveConstants.kEncoderPorts_Right[1],
+        DriveConstants.kEncoderReversed_Right);
+
+    // Gyroscope
+    private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
 
     /* Create new drive subsystem */
     public DriveSubsystem() {
@@ -25,6 +43,39 @@ public class DriveSubsystem extends SubsystemBase {
 
         /* Invert right side motors */
         m_rightDrive.setInverted(true);
+
+        // Set distance per pulse for the encoders
+        m_encoderLeft.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+        m_encoderRight.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+
+        resetEncoders();
+    }
+
+    /* Drive a given distance at a certain motor speed and then stop using the encoders */
+    public void driveStraightDistance(Measure<Distance> distance, double speed) {
+        resetEncoders();
+
+        // drive until we reach the distance
+        while (getMeanEncoderDistance().lt(distance)) {
+            arcadeDrive(speed, 0.0);
+        }
+
+        // stop the drive train
+        m_drive.arcadeDrive(0, 0);
+    }
+
+    public Measure<Distance> getMeanEncoderDistance() {
+        // Get the mean (average) distance between the two encoders
+        Measure<Distance> leftDistance = Units.Meters.of(m_encoderLeft.getDistance());
+        Measure<Distance> rightDistance = Units.Meters.of(m_encoderRight.getDistance());
+        Measure<Distance> averageDistance = leftDistance.plus(rightDistance).divide(2.0);
+        return averageDistance;
+    }
+
+    public void resetEncoders() {
+        /* Reset the encoders' values to 0 */
+        m_encoderLeft.reset();
+        m_encoderRight.reset();
     }
 
     /**

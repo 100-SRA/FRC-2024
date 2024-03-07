@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Autos;
 import frc.robot.commands.DefaultArmLift;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.ReverseDriveDirection;
@@ -15,7 +16,9 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteIntakeSubsystem;
 import frc.robot.subsystems.NoteThrowerSubsystem;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -117,12 +120,8 @@ public class RobotContainer {
          *
          * @return the command to run in autonomous
          */
-        // TODO(malik): Implement an autonomous program
-        /*
-         * public Command getAutonomousCommand() {
-         * // An example command will be run in autonomous
-         * // return Autos.exampleAuto(m_exampleSubsystem);
-         * ;
-         * }
-         */
+        public Command getAutonomousCommand() {
+                // Very simple autonomous program to drive a small distance forward
+                return Autos.driveTwoMeters(m_drivetrainSystem);
+        }
 }
