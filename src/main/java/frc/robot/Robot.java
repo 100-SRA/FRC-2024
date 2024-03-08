@@ -9,6 +9,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.commands.auton.AutonChooser;
+import frc.robot.commands.auton.Autos;
+import frc.robot.commands.auton.AutonChooser.AutonOption;
 import edu.wpi.first.cameraserver.CameraServer;
 
 /**
@@ -21,6 +25,16 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  private void mapAutonCommands() {
+		AutonChooser.setDefaultAuton(AutonOption.DO_NOTHING);
+		AutonChooser.assignAutonCommand(AutonOption.DO_NOTHING, Commands.none());
+		AutonChooser.assignAutonCommand(AutonOption.TWO_METERS, Autos.driveTwoMeters(m_robotContainer.m_drivetrainSystem));
+	}
+
+  private Command getAutonomousCommand() {
+		return AutonChooser.getChosenAutonCmd();
+	}
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -40,6 +54,7 @@ public class Robot extends TimedRobot {
     // Record driver station control and joystick data.
     // Change to false to not record joystick data.
     DriverStation.startDataLog(DataLogManager.getLog(), true);
+    mapAutonCommands();
   }
 
   /**
@@ -68,12 +83,10 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+    m_autonomousCommand = getAutonomousCommand();
+		if (m_autonomousCommand != null) {
+			m_autonomousCommand.schedule();
+		}
   }
 
   /** This function is called periodically during autonomous. */

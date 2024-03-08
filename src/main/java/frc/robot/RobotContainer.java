@@ -5,13 +5,13 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
 import frc.robot.commands.DefaultArmLift;
 import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.ReverseDriveDirection;
 import frc.robot.commands.SpinIntake;
 import frc.robot.commands.SwitchIntakeDirection;
 import frc.robot.commands.ThrowNote;
+import frc.robot.commands.auton.Autos;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteIntakeSubsystem;
@@ -33,10 +33,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
         // The robot's subsystems and commands are defined here...
-        private final DriveSubsystem m_drivetrainSystem = new DriveSubsystem();
-        private final ArmSubsystem m_armSystem = new ArmSubsystem();
-        private final NoteIntakeSubsystem m_intakeSystem = new NoteIntakeSubsystem();
-        private final NoteThrowerSubsystem m_throwerSystem = new NoteThrowerSubsystem();
+        public final DriveSubsystem m_drivetrainSystem = new DriveSubsystem();
+        public final ArmSubsystem m_armSystem = new ArmSubsystem();
+        public final NoteIntakeSubsystem m_intakeSystem = new NoteIntakeSubsystem();
+        public final NoteThrowerSubsystem m_throwerSystem = new NoteThrowerSubsystem();
 
         // Replace with CommandPS4Controller or CommandJoystick if needed
         private final CommandJoystick m_driverJoystickA = new CommandJoystick(
