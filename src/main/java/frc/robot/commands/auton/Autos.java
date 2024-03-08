@@ -15,8 +15,12 @@ public final class Autos {
   //   return Commands.sequence(subsystem.exampleMethodCommand(), new ExampleCommand(subsystem));
   // }
 
+  public static Command driveOneMeter(DriveSubsystem drive) {
+    return Commands.runOnce(() -> drive.driveStraightDistance(Units.Meters.of(1), 0.8)).asProxy();
+  }
+
   public static Command driveTwoMeters(DriveSubsystem drive) {
-    return Commands.runOnce(() -> drive.driveStraightDistance(Units.Meters.of(2), 0.7), drive);
+    return Commands.runOnce(() -> drive.driveStraightDistance(Units.Meters.of(2), 0.8)).asProxy();
   }
 
   private Autos() {

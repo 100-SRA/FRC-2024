@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 public class AutonChooser {
     public enum AutonOption {
         DO_NOTHING("0 - do nothing"),
+        ONE_METER("0 - one meters"),
         TWO_METERS("0 - two meters");
 
         public final String m_description;

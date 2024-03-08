@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
   private void mapAutonCommands() {
 		AutonChooser.setDefaultAuton(AutonOption.DO_NOTHING);
 		AutonChooser.assignAutonCommand(AutonOption.DO_NOTHING, Commands.none());
+    AutonChooser.assignAutonCommand(AutonOption.ONE_METER, Autos.driveOneMeter(m_robotContainer.m_drivetrainSystem));
 		AutonChooser.assignAutonCommand(AutonOption.TWO_METERS, Autos.driveTwoMeters(m_robotContainer.m_drivetrainSystem));
 	}
 

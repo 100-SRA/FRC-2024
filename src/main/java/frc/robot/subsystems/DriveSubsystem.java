@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -40,6 +41,8 @@ public class DriveSubsystem extends SubsystemBase {
         /* Add info to the dashboard about the drive train */
         SendableRegistry.addChild(m_drive, m_leftDrive);
         SendableRegistry.addChild(m_drive, m_rightDrive);
+        SendableRegistry.addChild(m_drive, m_encoderLeft);
+        SendableRegistry.addChild(m_drive, m_encoderRight);
 
         /* Invert right side motors */
         m_rightDrive.setInverted(true);
@@ -85,13 +88,14 @@ public class DriveSubsystem extends SubsystemBase {
      * @param rotation commanded rotation movement
      */
     public void arcadeDrive(double forward, double rotation) {
+        SmartDashboard.putNumber("Left Drive Encoder", m_encoderLeft.getDistance());
+        SmartDashboard.putNumber("Right Drive Encoder", m_encoderRight.getDistance());
         if (m_IsReversed) {
             forward = forward * -1;
         }
         forward = forward * m_SpeedMultiplier;
         rotation = rotation * m_SpeedMultiplier;
         m_drive.arcadeDrive(forward, rotation);
-
     }
 
     public void toggleReversed() {

@@ -40,8 +40,8 @@ public final class Constants {
     /* Drivetrain encoder setup */
     public static final int kEncoderPorts_Left[] = {0, 1};
     public static final int kEncoderPorts_Right[] = {2, 3};
-    public static final boolean kEncoderReversed_Left = false;
-    public static final boolean kEncoderReversed_Right = true;
+    public static final boolean kEncoderReversed_Left = true;
+    public static final boolean kEncoderReversed_Right = false;
     public static final int kEncoderCPR = 2048;
     public static final double kWheelDiameterMeters = 0.1524;
     // Encoders directly on the wheel shaft
