@@ -22,7 +22,7 @@ public final class Autos {
                 () -> drive.arcadeDrive(0.5, 0.0) /* execution */,
                 interrupted -> drive.arcadeDrive(0.0, 0.0) /* end */,
                 () -> drive.getMeanEncoderDistance().gte(AutoConstants.kAutoLeaveDistance) /* is it finished ? */,
-                drive /* required subsystem */);
+                drive /* required subsystem */).withTimeout(2);
     }
 
     private Autos() {
