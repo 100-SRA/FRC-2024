@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
@@ -38,12 +37,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     /* Create new drive subsystem */
     public DriveSubsystem() {
-        /* Add info to the dashboard about the drive train */
-        SendableRegistry.addChild(m_drive, m_leftDrive);
-        SendableRegistry.addChild(m_drive, m_rightDrive);
-        SendableRegistry.addChild(m_drive, m_encoderLeft);
-        SendableRegistry.addChild(m_drive, m_encoderRight);
-
         /* Invert right side motors */
         m_rightDrive.setInverted(true);
 

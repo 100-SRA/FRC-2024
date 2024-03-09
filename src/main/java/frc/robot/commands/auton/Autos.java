@@ -17,12 +17,13 @@ public final class Autos {
     // }
 
     public static Command leaveStartingZone(DriveSubsystem drive) {
+        /* Create autonomous command that leaves the starting zone and quits after a timeout */
         return new FunctionalCommand(
                 drive::resetEncoders /* initialization */,
                 () -> drive.arcadeDrive(0.5, 0.0) /* execution */,
                 interrupted -> drive.arcadeDrive(0.0, 0.0) /* end */,
                 () -> drive.getMeanEncoderDistance().gte(AutoConstants.kAutoLeaveDistance) /* is it finished ? */,
-                drive /* required subsystem */).withTimeout(2);
+                drive /* required subsystem */).withTimeout(14);
     }
 
     private Autos() {

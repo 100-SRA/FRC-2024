@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -45,6 +46,9 @@ public class Robot extends TimedRobot {
         // Record driver station control and joystick data.
         // Change to false to not record joystick data.
         DriverStation.startDataLog(DataLogManager.getLog(), true);
+
+        /* Initialize dashboard information */
+        SmartDashboard.putData(CommandScheduler.getInstance());
     }
 
     /**
