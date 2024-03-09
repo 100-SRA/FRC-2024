@@ -9,9 +9,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 public class AutonChooser {
     public enum AutonOption {
-        DO_NOTHING("0 - do nothing"),
-        ONE_METER("0 - one meters"),
-        TWO_METERS("0 - two meters");
+        DO_NOTHING("0 notes - do nothing"),
+        LEAVE_STARTING_ZONE("0 notes - leave start zone (2 meters)");
 
         public final String m_description;
 

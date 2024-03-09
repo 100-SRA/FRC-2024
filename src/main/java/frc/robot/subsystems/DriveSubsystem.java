@@ -4,12 +4,12 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -54,19 +54,6 @@ public class DriveSubsystem extends SubsystemBase {
         resetEncoders();
     }
 
-    /* Drive a given distance at a certain motor speed and then stop using the encoders */
-    public void driveStraightDistance(Measure<Distance> distance, double speed) {
-        resetEncoders();
-
-        // drive until we reach the distance
-        while (getMeanEncoderDistance().lt(distance)) {
-            arcadeDrive(speed, 0.0);
-        }
-
-        // stop the drive train
-        m_drive.arcadeDrive(0, 0);
-    }
-
     public Measure<Distance> getMeanEncoderDistance() {
         // Get the mean (average) distance between the two encoders
         Measure<Distance> leftDistance = Units.Meters.of(m_encoderLeft.getDistance());
@@ -88,8 +75,6 @@ public class DriveSubsystem extends SubsystemBase {
      * @param rotation commanded rotation movement
      */
     public void arcadeDrive(double forward, double rotation) {
-        SmartDashboard.putNumber("Left Drive Encoder", m_encoderLeft.getDistance());
-        SmartDashboard.putNumber("Right Drive Encoder", m_encoderRight.getDistance());
         if (m_IsReversed) {
             forward = forward * -1;
         }
@@ -104,5 +89,15 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void setSpeedMultiplier(double speed) {
         m_SpeedMultiplier = speed;
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+
+        builder.setSmartDashboardType("Drive Subsystem");
+        // Publish encoder states to telemetry
+        builder.addDoubleProperty("left drive encoder", () -> m_encoderLeft.getDistance(), null);
+        builder.addDoubleProperty("right drive encoder", () -> m_encoderRight.getDistance(), null);
     }
 }

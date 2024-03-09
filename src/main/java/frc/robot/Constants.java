@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.units.Distance;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -30,6 +34,11 @@ public final class Constants {
     public static final int kButton_Trigger = 1;
     public static final int kButton_Two = 2;
     public static final int kButton_Three = 3;
+  }
+
+  public static class AutoConstants {
+      /* Drive distance for leaving the start zone */
+      public static final Measure<Distance> kAutoLeaveDistance = Units.Meters.of(2.0);
   }
 
   public static class DriveConstants {
