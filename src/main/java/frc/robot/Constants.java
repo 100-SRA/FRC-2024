@@ -53,10 +53,13 @@ public final class Constants {
     public static final int kEncoderPorts_Right[] = {2, 3};
     public static final boolean kEncoderReversed_Left = true;
     public static final boolean kEncoderReversed_Right = false;
-    public static final int kEncoderCPR = 2048;
-    public static final double kWheelDiameterMeters = 0.1524;
+    // cycles per revolution (see encoder spec)
+    public static final int kEncoderResolution = 2048;
+    public static final double kWheelRadiusMeters = 0.0762;
     // Encoders directly on the wheel shaft
-    public static final double kEncoderDistancePerPulse = (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
+    // Calculate the rolling distance corresponding to a single encoder pulse
+    // (also called a cycle)
+    public static final double kEncoderDistancePerPulse = 2 * Math.PI * kWheelRadiusMeters / kEncoderResolution;
   }
 
   public static class ArmConstants {
