@@ -7,7 +7,10 @@ package frc.robot.commands.auton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.commands.ThrowNote;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.NoteIntakeSubsystem;
+import frc.robot.subsystems.NoteThrowerSubsystem;
 
 public final class Autos {
     /** Example static factory for an autonomous command. */
@@ -15,6 +18,10 @@ public final class Autos {
     // return Commands.sequence(subsystem.exampleMethodCommand(), new
     // ExampleCommand(subsystem));
     // }
+    
+    public static Command throwNote(NoteThrowerSubsystem thrower, NoteIntakeSubsystem intake) {
+        return new ThrowNote(thrower, intake);
+    }
 
     public static Command leaveStartingZone(DriveSubsystem drive) {
         /* Create autonomous command that leaves the starting zone and quits after a timeout */

@@ -10,7 +10,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 public class AutonChooser {
     public enum AutonOption {
         DO_NOTHING("NOTHING"),
-        LEAVE_STARTING_ZONE("LEAVE STARTING ZONE");
+        LEAVE_STARTING_ZONE("LEAVE STARTING ZONE"),
+        THROW_NOTE("THROW NOTE");
 
         public final String m_description;
 
