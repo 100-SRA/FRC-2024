@@ -10,7 +10,7 @@ import frc.robot.commands.DefaultDrive;
 import frc.robot.commands.ReverseDriveDirection;
 import frc.robot.commands.SpinIntake;
 import frc.robot.commands.SwitchIntakeDirection;
-import frc.robot.commands.ThrowNote;
+import frc.robot.commands.SpinThrowerWheels;
 import frc.robot.commands.RaiseRobot;
 import frc.robot.commands.LowerRobot;
 import frc.robot.commands.auton.Autos;
@@ -142,7 +142,7 @@ public class RobotContainer {
          * joystick B, while modulating the speed based on the joystick's Z axis (dial)
          */
         new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Trigger)
-                .whileTrue(new ThrowNote(m_throwerSystem));
+                .whileTrue(new SpinThrowerWheels(m_throwerSystem));
 
         /*
          * Lifter control buttons:
