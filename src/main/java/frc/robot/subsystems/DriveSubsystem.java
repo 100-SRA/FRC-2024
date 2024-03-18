@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
+    private SendableBuilder m_builder;
+
     // Left and Right sides of drivetrain
     private final PWMSparkMax m_leftDrive = new PWMSparkMax(DriveConstants.kPortPWM_Drivetrain_L);
     private final PWMSparkMax m_rightDrive = new PWMSparkMax(DriveConstants.kPortPWM_Drivetrain_R);
@@ -68,6 +70,9 @@ public class DriveSubsystem extends SubsystemBase {
         m_drive.arcadeDrive(forward, rotation);
     }
 
+    /*
+     * Toggle whether we're reversing the drive direction
+     */
     public void toggleReversed() {
         m_IsReversed = !m_IsReversed;
     }
@@ -82,7 +87,13 @@ public class DriveSubsystem extends SubsystemBase {
 
         builder.setSmartDashboardType("Drive Subsystem");
         // Publish encoder states to telemetry
-        builder.addDoubleProperty("left drive encoder", () -> m_encoderLeft.getDistance(), null);
-        builder.addDoubleProperty("right drive encoder", () -> m_encoderRight.getDistance(), null);
+        builder.addDoubleProperty("left encoder (meters)", () -> m_encoderLeft.getDistance(), null);
+        builder.addDoubleProperty("right encoder (meters)", () -> m_encoderRight.getDistance(), null);
+        m_builder = builder;
+    }
+
+    @Override
+    public void periodic() {
+        m_builder.update();
     }
 }
