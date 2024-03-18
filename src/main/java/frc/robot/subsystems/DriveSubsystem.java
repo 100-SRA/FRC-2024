@@ -1,10 +1,6 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.units.Distance;
-import edu.wpi.first.units.Measure;
-import edu.wpi.first.units.Units;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -40,25 +36,21 @@ public class DriveSubsystem extends SubsystemBase {
         /* Invert right side motors */
         m_rightDrive.setInverted(true);
 
-        // Set distance per pulse for the encoders
+        // Set distance per pulse for the encoders (in meters)
         m_encoderLeft.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
         m_encoderRight.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
 
-        resetEncoders();
-    }
-
-    public Measure<Distance> getMeanEncoderDistance() {
-        // Get the mean (average) distance between the two encoders
-        Measure<Distance> leftDistance = Units.Meters.of(m_encoderLeft.getDistance());
-        Measure<Distance> rightDistance = Units.Meters.of(m_encoderRight.getDistance());
-        Measure<Distance> averageDistance = leftDistance.plus(rightDistance).divide(2.0);
-        return averageDistance;
-    }
-
-    public void resetEncoders() {
-        /* Reset the encoders' values to 0 */
         m_encoderLeft.reset();
         m_encoderRight.reset();
+    }
+
+    public double getMeanEncoderDistance() {
+        // Get the mean (average) distance in meters between the two encoders
+        // since the last call to .reset()
+        double leftDistance = m_encoderLeft.getDistance();
+        double rightDistance = m_encoderRight.getDistance();
+        double averageDistance = (leftDistance + rightDistance) / 2;
+        return averageDistance;
     }
 
     /**
