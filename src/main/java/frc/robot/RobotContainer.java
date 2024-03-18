@@ -153,15 +153,21 @@ public class RobotContainer {
         new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Four)
                 .whileTrue(new RaiseRobot(
                             m_lifterSystem,
-                            () -> convertRanges(
-                                                m_driverJoystickB.getZ(),
-                                                -1, 1, 0, 1)));
+                            () -> {
+                                /* convert from Z axis values to 0 to 1 */
+                                double dialValue = m_driverJoystickB.getZ();
+                                double hookPower = (-1 * dialValue + 1) / 2;
+                                return hookPower;
+                            }));
         new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Six)
                 .whileTrue(new LowerRobot(
                             m_lifterSystem,
-                            () -> convertRanges(
-                                                m_driverJoystickB.getZ(),
-                                                -1, 1, 0, 1)));
+                            () -> {
+                                /* convert from Z axis values to 0 to 1 */
+                                double dialValue = m_driverJoystickB.getZ();
+                                double hookPower = (-1 * dialValue + 1) / 2;
+                                return hookPower;
+                            }));
     }
 
     private void mapAutonCommands() {

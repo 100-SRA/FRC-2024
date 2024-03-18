@@ -19,7 +19,7 @@ public class LifterSubsystem extends SubsystemBase {
     public void moveHook(double power) {
         // m_liftMotor.set(power);
         boolean reverse = power < 0;
-        m_liftMotor.set(reverse ? -1 : 1);
+        m_liftMotor.set(reverse ? -0.5 : 0.5);
     }
 
     public void stopHook() {
