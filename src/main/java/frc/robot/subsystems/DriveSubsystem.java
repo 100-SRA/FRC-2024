@@ -42,6 +42,10 @@ public class DriveSubsystem extends SubsystemBase {
         m_encoderLeft.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
         m_encoderRight.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
 
+        resetEncoders();
+    }
+
+    public void resetEncoders() {
         m_encoderLeft.reset();
         m_encoderRight.reset();
     }

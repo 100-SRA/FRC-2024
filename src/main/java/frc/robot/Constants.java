@@ -39,8 +39,8 @@ public final class Constants {
   }
 
   public static class AutoConstants {
-      /* Drive distance for leaving the start zone */
-      public static final Measure<Distance> kAutoLeaveDistance = Units.Meters.of(2.0);
+      /* Drive distance for leaving the start zone in meters */
+      public static final double kAutoLeaveDistance = 2.0;
   }
 
   public static class DriveConstants {
