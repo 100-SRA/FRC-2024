@@ -93,6 +93,7 @@ public class DriveSubsystem extends SubsystemBase {
         // Publish encoder states to telemetry
         builder.addDoubleProperty("left encoder (meters)", () -> m_encoderLeft.getDistance(), null);
         builder.addDoubleProperty("right encoder (meters)", () -> m_encoderRight.getDistance(), null);
+        builder.addDoubleProperty("encoder avg (meters)", () -> getMeanEncoderDistance(), null);
         m_builder = builder;
     }
 
