@@ -11,6 +11,8 @@ import frc.robot.commands.ReverseDriveDirection;
 import frc.robot.commands.SpinIntake;
 import frc.robot.commands.SwitchIntakeDirection;
 import frc.robot.commands.ThrowNote;
+import frc.robot.commands.RaiseRobot;
+import frc.robot.commands.LowerRobot;
 import frc.robot.commands.auton.Autos;
 import frc.robot.commands.auton.AutonChooser;
 import frc.robot.commands.auton.AutonChooser.AutonOption;
@@ -18,6 +20,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteIntakeSubsystem;
 import frc.robot.subsystems.NoteThrowerSubsystem;
+import frc.robot.subsystems.LifterSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -41,6 +44,7 @@ public class RobotContainer {
     private final ArmSubsystem m_armSystem = new ArmSubsystem();
     private final NoteIntakeSubsystem m_intakeSystem = new NoteIntakeSubsystem();
     private final NoteThrowerSubsystem m_throwerSystem = new NoteThrowerSubsystem();
+    private final LifterSubsystem m_lifterSystem = new LifterSubsystem();
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandJoystick m_driverJoystickA = new CommandJoystick(
@@ -88,6 +92,19 @@ public class RobotContainer {
                         () -> -m_driverJoystickB.getY()));
     }
 
+    /* Convert a double value x from range [A_lo, A_hi] to its equivalent in range [B_lo, B_hi] */
+    double convertRanges(double x, double rangeA_Lo, double rangeA_Hi,
+            double rangeB_Lo, double rangeB_Hi) {
+        /* compute the offset value that x represents as a fraction of range A */
+        assert rangeA_Lo <= rangeA_Hi;
+        assert rangeB_Lo <= rangeB_Hi;
+
+        x = x / (rangeA_Hi - rangeA_Lo);
+        x = x * (rangeB_Hi - rangeB_Lo);
+        x = x + rangeB_Lo;
+        return x;
+    }
+
     /**
      * Use this method to define your trigger->command mappings. Triggers can be
      * created via the
@@ -125,7 +142,26 @@ public class RobotContainer {
          * joystick B, while modulating the speed based on the joystick's Z axis (dial)
          */
         new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Trigger)
-                .whileTrue(new ThrowNote(m_throwerSystem, () -> m_driverJoystickB.getZ()));
+                .whileTrue(new ThrowNote(m_throwerSystem));
+
+        /*
+         * Lifter control buttons:
+         * - Use the dial at the base of the joystick to control the lift power
+         * - Hold button 4 to raise the robot / pull the hook down
+         * - Hold button 6 to lower the robot / let the hook go up
+         */
+        new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Four)
+                .whileTrue(new RaiseRobot(
+                            m_lifterSystem,
+                            () -> convertRanges(
+                                                m_driverJoystickB.getZ(),
+                                                -1, 1, 0, 1)));
+        new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Six)
+                .whileTrue(new LowerRobot(
+                            m_lifterSystem,
+                            () -> convertRanges(
+                                                m_driverJoystickB.getZ(),
+                                                -1, 1, 0, 1)));
     }
 
     private void mapAutonCommands() {

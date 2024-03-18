@@ -34,6 +34,8 @@ public final class Constants {
     public static final int kButton_Trigger = 1;
     public static final int kButton_Two = 2;
     public static final int kButton_Three = 3;
+    public static final int kButton_Four = 4;
+    public static final int kButton_Six = 6;
   }
 
   public static class AutoConstants {
@@ -82,5 +84,10 @@ public final class Constants {
 
     /* Power of the note intake motor */
     public static final double kIntakePower = 0.8;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+  }
+
+  public static class LiftConstants {
+    /* CAN ids for arm lifter motor controllers */
+    public static final int kCANid_LiftMotor = 6;
   }
 }
