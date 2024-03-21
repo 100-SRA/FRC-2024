@@ -177,6 +177,8 @@ public class RobotContainer {
                 Autos.leaveStartingZone(m_drivetrainSystem));
         AutonChooser.assignAutonCommand(AutonOption.THROW_NOTE,
                 Autos.throwNote(m_throwerSystem, m_intakeSystem));
+        AutonChooser.assignAutonCommand(AutonOption.SPEAKER_CENTER_NOTES,
+                Autos.scoreTwoNotesInSpeaker(m_drivetrainSystem, m_throwerSystem, m_intakeSystem));
     }
 
     /**

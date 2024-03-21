@@ -15,27 +15,19 @@ import frc.robot.subsystems.NoteThrowerSubsystem;
  * 4. stop both sets of wheels
  */
 public class ThrowNote extends Command {
-    private final NoteThrowerSubsystem m_thrower;
-    private final NoteIntakeSubsystem m_intake;
-
     private ParallelDeadlineGroup m_throwNote;
 
-    private final double kThrowerSpinupTime = 3; /* seconds */
-    private final double kIntakeNotePushTime = 1; /* seconds */
+    static private final double kThrowerSpinupTime = 3; /* seconds */
+    static private final double kIntakeNotePushTime = 1; /* seconds */
 
-    public ThrowNote(NoteThrowerSubsystem thrower, NoteIntakeSubsystem intake) {
-        m_thrower = thrower;
-        m_intake = intake;
-        addRequirements(m_thrower);
-        addRequirements(m_intake);
-
+    static public Command buildCommand(NoteThrowerSubsystem thrower, NoteIntakeSubsystem intake) {
         /* Create a sequential command chain that first waits a while,
          * then spins the intake wheels for a short time to push the note up
          * into the throwers
          */
         SequentialCommandGroup pushNoteIntoThrowers = new SequentialCommandGroup(
                 new WaitCommand(kThrowerSpinupTime),
-                new SpinIntake(m_intake).withTimeout(kIntakeNotePushTime));
+                new SpinIntake(intake).withTimeout(kIntakeNotePushTime));
 
         /* Create a group command that runs two commands in parallel:
          * A. command to start the thrower wheels spinning
@@ -44,8 +36,8 @@ public class ThrowNote extends Command {
          * This group command should stop the thrower-wheel-spinning command
          * as soon as the push-note-into-throwers-after-delay command ends
          */
-        m_throwNote = new ParallelDeadlineGroup(
-                pushNoteIntoThrowers, new SpinThrowerWheels(m_thrower));
+        return new ParallelDeadlineGroup(
+                pushNoteIntoThrowers, new SpinThrowerWheels(thrower));
     }
 
     @Override

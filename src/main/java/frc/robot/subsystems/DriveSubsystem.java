@@ -30,6 +30,9 @@ public class DriveSubsystem extends SubsystemBase {
         DriveConstants.kEncoderPorts_Right[1],
         DriveConstants.kEncoderReversed_Right);
 
+    private boolean m_leftEncoderReversed = DriveConstants.kEncoderReversed_Left;
+    private boolean m_rightEncoderReversed = DriveConstants.kEncoderReversed_Right;
+
     // Gyroscope
     private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
 
@@ -78,7 +81,15 @@ public class DriveSubsystem extends SubsystemBase {
      * Toggle whether we're reversing the drive direction
      */
     public void toggleReversed() {
+        // Reverse drive motors direction
         m_IsReversed = !m_IsReversed;
+
+        // Flip encoder directions (we always want "forward" to mean encoders increasing value)
+        // This makes it so we can drive autonomously in both directions easily
+        m_leftEncoderReversed = !m_leftEncoderReversed;
+        m_rightEncoderReversed = !m_rightEncoderReversed;
+        m_encoderLeft.setReverseDirection(m_leftEncoderReversed);
+        m_encoderRight.setReverseDirection(m_rightEncoderReversed);
     }
 
     public void setSpeedMultiplier(double speed) {

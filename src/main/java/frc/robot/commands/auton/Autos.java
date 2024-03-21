@@ -5,8 +5,13 @@
 package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.commands.ReverseDriveDirection;
+import frc.robot.commands.SpinIntake;
 import frc.robot.commands.ThrowNote;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteIntakeSubsystem;
@@ -19,18 +24,57 @@ public final class Autos {
     // ExampleCommand(subsystem));
     // }
     
-    public static Command throwNote(NoteThrowerSubsystem thrower, NoteIntakeSubsystem intake) {
-        return new ThrowNote(thrower, intake);
+    public static Command throwNote(NoteThrowerSubsystem thrower,
+            NoteIntakeSubsystem intake) {
+        return ThrowNote.buildCommand(thrower, intake);
+    }
+
+    public static Command scoreTwoNotesInSpeaker(DriveSubsystem drive,
+            NoteThrowerSubsystem thrower, NoteIntakeSubsystem intake) {
+        double kNoteRetrievalDriveDistance = 1.0; /* meters */
+        double kNoteIntakeWaitTime = 0.5; /* seconds */
+        double kNoteRetrievalDriveSpeed = 0.55; /* percentage of motor power */
+        double kReturnDriveSpeed = 0.5; /* percentage of motor power */
+
+        Command driveToNewNoteAndWait = Commands.sequence(
+                driveXMeters(drive, kNoteRetrievalDriveSpeed, kNoteRetrievalDriveDistance),
+                new WaitCommand(kNoteIntakeWaitTime));
+
+        Command waitAndIntakeNote = Commands.sequence(
+                new WaitUntilCommand(() -> drive.getMeanEncoderDistance() >= kNoteRetrievalDriveDistance / 2),
+                new SpinIntake(intake));
+
+        Command driveAndRetrieveNote = Commands.race(
+                driveToNewNoteAndWait, waitAndIntakeNote);
+
+        /*
+         * Full two-note autonomous program
+         */
+        Command scoreTwoNotes = Commands.sequence(
+                ThrowNote.buildCommand(thrower, intake),
+                driveAndRetrieveNote,
+                new ReverseDriveDirection(drive),
+                driveXMeters(drive, kReturnDriveSpeed, kNoteRetrievalDriveDistance),
+                new ReverseDriveDirection(drive),
+                ThrowNote.buildCommand(thrower, intake)
+        );
+        return scoreTwoNotes;
+    }
+
+    public static Command driveXMeters(DriveSubsystem drive, double speed,
+            double distance) {
+        /* Create autonomous command that leaves the starting zone and quits after a timeout */
+        return new FunctionalCommand(
+                () -> drive.resetEncoders() /* initialization */,
+                () -> drive.arcadeDrive(speed, 0.0) /* execution */,
+                interrupted -> drive.arcadeDrive(0.0, 0.0) /* end */,
+                () -> drive.getMeanEncoderDistance() >= distance /* finish after driving the distance */,
+                drive /* required subsystem */);
     }
 
     public static Command leaveStartingZone(DriveSubsystem drive) {
-        /* Create autonomous command that leaves the starting zone and quits after a timeout */
-        return new FunctionalCommand(
-                drive::resetEncoders /* initialization */,
-                () -> drive.arcadeDrive(0.5, 0.0) /* execution */,
-                interrupted -> drive.arcadeDrive(0.0, 0.0) /* end */,
-                () -> drive.getMeanEncoderDistance() >= AutoConstants.kAutoLeaveDistance /* is it finished ? */,
-                drive /* required subsystem */).withTimeout(14 /* seconds */);
+        return driveXMeters(drive, 0.5, AutoConstants.kAutoLeaveDistance)
+            .withTimeout(14 /* seconds */);
     }
 
     private Autos() {
