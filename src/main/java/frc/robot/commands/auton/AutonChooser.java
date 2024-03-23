@@ -12,8 +12,9 @@ public class AutonChooser {
         DO_NOTHING("NOTHING"),
         LEAVE_STARTING_ZONE("LEAVE START ZONE"),
         THROW_NOTE("1NOTES - SPKR CNTR"),
-        SPEAKER_CENTER_NOTES("2NOTES - SPKR CNTR");
-
+        SPEAKER_CENTER_NOTES("2NOTES - SPKR CNTR"),
+        Set_Arm_down("it is a test to set the arm down");
+        
         public final String m_description;
 
         AutonOption(String description) {

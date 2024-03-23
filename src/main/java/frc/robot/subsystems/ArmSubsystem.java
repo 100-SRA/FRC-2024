@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.DriveConstants;
 
 public class ArmSubsystem extends SubsystemBase {
     // Left and Right motors are brushless NEO motors connected using CAN
@@ -30,10 +31,16 @@ public class ArmSubsystem extends SubsystemBase {
         m_armLiftMotor_Right.set(speed);
     }
 
+    //arm encoder
+    private final Encoder m_EncoderArm = new Encoder(
+        DriveConstants.kEncoderPorts_Arm[0],
+        DriveConstants.kEncoderPorts_Arm[1]);
+
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
-
+        builder.addDoubleProperty("Arm Encoder", ()-> m_EncoderArm.getDistance(), null);
         builder.setSmartDashboardType("Arm Subsystem");
     }
+    
 }
