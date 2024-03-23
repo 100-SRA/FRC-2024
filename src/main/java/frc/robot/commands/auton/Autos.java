@@ -31,6 +31,19 @@ public final class Autos {
         return ThrowNote.buildCommand(thrower, intake);
     }
 
+    public static Command scoreOneNoteInSpeaker(
+            NoteThrowerSubsystem thrower,
+            NoteIntakeSubsystem intake,
+            ArmSubsystem arm) {
+        double kArmLoweringDuration = 2; /* seconds */
+        double kArmLoweringPower = -0.5; /* motor power from -1 to 1 */
+        return Commands.sequence(
+            Commands.run(() -> arm.liftArm(kArmLoweringPower), arm)
+                .withTimeout(kArmLoweringDuration),
+            ThrowNote.buildCommand(thrower, intake)
+        );
+    }
+
     public static Command scoreTwoNotesInSpeaker(DriveSubsystem drive,
             NoteThrowerSubsystem thrower, NoteIntakeSubsystem intake, ArmSubsystem arm) {
         double kNoteRetrievalDriveDistance = 1.0; /* meters */
@@ -38,6 +51,7 @@ public final class Autos {
         double kNoteRetrievalDriveSpeed = 0.55; /* percentage of motor power */
         double kReturnDriveSpeed = 0.5; /* percentage of motor power */
 
+        // TODO: fix the two note auto to include arm lowering at the start
         Command driveToNewNoteAndWait = Commands.sequence(
                 Commands.run(() -> arm.liftArm(-.3)).withTimeout(1.5), //WIP it still does not more the arm at the start
                 driveXMeters(drive, kNoteRetrievalDriveSpeed, kNoteRetrievalDriveDistance),
