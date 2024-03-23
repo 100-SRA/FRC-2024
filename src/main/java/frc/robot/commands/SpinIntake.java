@@ -13,7 +13,7 @@ public class SpinIntake extends Command{
 
     /*called the activate intake for the arm subsystem, once called it runs until the button is pressed to stop */
     @Override 
-    public void initialize(){
+    public void execute(){
         m_intakeSubsystem.activateIntake();
     }
 

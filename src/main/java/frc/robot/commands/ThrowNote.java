@@ -1,45 +1,60 @@
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.NoteIntakeSubsystem;
 import frc.robot.subsystems.NoteThrowerSubsystem;
 
 /*
- * Command to start the thrower wheels spinning to launch a note.
+ * Composite command assuming there is a note in possession:
+ * 1. spin up the thrower wheels
+ * 2. wait for a few seconds
+ * 3. spin the intake wheels for a short time (push note into throwers)
+ * 4. stop both sets of wheels
  */
 public class ThrowNote extends Command {
-    private final NoteThrowerSubsystem m_throwerSubsystem;
-    private final DoubleSupplier m_speedControl;
+    private ParallelDeadlineGroup m_throwNote;
 
-    public ThrowNote(NoteThrowerSubsystem subsystem, DoubleSupplier speedControl) {
-        m_throwerSubsystem = subsystem;
-        m_speedControl = speedControl;
-        addRequirements(m_throwerSubsystem);
+    static private final double kThrowerSpinupTime = 3; /* seconds */
+    static private final double kIntakeNotePushTime = 1; /* seconds */
+
+    static public Command buildCommand(NoteThrowerSubsystem thrower, NoteIntakeSubsystem intake) {
+        /* Create a sequential command chain that first waits a while,
+         * then spins the intake wheels for a short time to push the note up
+         * into the throwers
+         */
+        SequentialCommandGroup pushNoteIntoThrowers = new SequentialCommandGroup(
+                new WaitCommand(kThrowerSpinupTime),
+                new SpinIntake(intake).withTimeout(kIntakeNotePushTime));
+
+        /* Create a group command that runs two commands in parallel:
+         * A. command to start the thrower wheels spinning
+         * B. command to push-note-into-throwers-after-delay
+         *
+         * This group command should stop the thrower-wheel-spinning command
+         * as soon as the push-note-into-throwers-after-delay command ends
+         */
+        return new ParallelDeadlineGroup(
+                pushNoteIntoThrowers, new SpinThrowerWheels(thrower));
     }
 
     @Override
-    public void execute() {
-        // set wheel speed based on joystick dial
-        // need to convert from joystick dial's range of 1.0 at bottom, -1.0 at top to
-        // desired range of 0.0 (0% speed) at bottom to 1.0 (100% speed) at top
-        // steps to do so:
-        // 1. invert (*= -1) -> -1.0 at bottom, +1.0 at top
-        // 2. add 1 -> 0.0 at bottom, +2.0 at top
-        // 3. divide by 2 -> 0.0 at bottom, +1.0 at top
-        double rawSpeedValue = m_speedControl.getAsDouble();
-        double speedAsPercentage = (-1 * rawSpeedValue + 1) / 2.0;
-        m_throwerSubsystem.setSpeed(speedAsPercentage);
-        m_throwerSubsystem.spinThrowers();
+    public void initialize() {
+        /* Schedule the composite command we created in the constructor to be
+         * ran by the Command Scheduler
+         */
+        m_throwNote.schedule();
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return m_throwNote.isFinished();
     }
 
     @Override
     public void end(boolean interrupted) {
-        m_throwerSubsystem.stopThrowers();
+        m_throwNote.end(interrupted);
     }
 }

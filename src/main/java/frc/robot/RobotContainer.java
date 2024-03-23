@@ -12,11 +12,20 @@ import frc.robot.commands.ReverseDriveDirection;
 import frc.robot.commands.SetArmPosition;
 import frc.robot.commands.SpinIntake;
 import frc.robot.commands.SwitchIntakeDirection;
-import frc.robot.commands.ThrowNote;
+import frc.robot.commands.SpinThrowerWheels;
+import frc.robot.commands.RaiseRobot;
+import frc.robot.commands.LowerRobot;
+import frc.robot.commands.auton.Autos;
+import frc.robot.commands.auton.AutonChooser;
+import frc.robot.commands.auton.AutonChooser.AutonOption;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteIntakeSubsystem;
 import frc.robot.subsystems.NoteThrowerSubsystem;
+import frc.robot.subsystems.LifterSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -32,120 +41,155 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-        // The robot's subsystems and commands are defined here...
-        private final DriveSubsystem m_drivetrainSystem = new DriveSubsystem();
-        private final ArmSubsystem m_armSystem = new ArmSubsystem();
-        private final NoteIntakeSubsystem m_intakeSystem = new NoteIntakeSubsystem();
-        private final NoteThrowerSubsystem m_throwerSystem = new NoteThrowerSubsystem();
+    // The robot's subsystems and commands are defined here...
+    private final DriveSubsystem m_drivetrainSystem = new DriveSubsystem();
+    private final ArmSubsystem m_armSystem = new ArmSubsystem();
+    private final NoteIntakeSubsystem m_intakeSystem = new NoteIntakeSubsystem();
+    private final NoteThrowerSubsystem m_throwerSystem = new NoteThrowerSubsystem();
+    private final LifterSubsystem m_lifterSystem = new LifterSubsystem();
 
-        // Replace with CommandPS4Controller or CommandJoystick if needed
-        private final CommandJoystick m_driverJoystickA = new CommandJoystick(
-                        OperatorConstants.kPortUSB_DriverJoystick_A);
-        private final CommandJoystick m_driverJoystickB = new CommandJoystick(
-                        OperatorConstants.kPortUSB_DriverJoystick_B);
+    // Replace with CommandPS4Controller or CommandJoystick if needed
+    private final CommandJoystick m_driverJoystickA = new CommandJoystick(
+            OperatorConstants.kPortUSB_DriverJoystick_A);
+    private final CommandJoystick m_driverJoystickB = new CommandJoystick(
+            OperatorConstants.kPortUSB_DriverJoystick_B);
 
-        /**
-         * The container for the robot. Contains subsystems, OI devices, and commands.
-         */
-        public RobotContainer() {
-                // Configure the trigger bindings
-                configureBindings();
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        // Set up dashboard information
+        SmartDashboard.putData(m_drivetrainSystem);
+        SmartDashboard.putData(m_armSystem);
+        SmartDashboard.putData(m_intakeSystem);
+        SmartDashboard.putData(m_throwerSystem);
+        // Configure the trigger bindings
+        configureBindings();
 
-                // Configure default commands
-                // Set default drive command to single-stick arcade drive 
-                m_drivetrainSystem.setDefaultCommand(
-                                /**
-                                 * Single-stick arcade command, with forward/backward
-                                 * and turning controlled by different axes of the first joystick.
-                                 * Speed control via the Z axis (dial at the base of the joystick).
-                                 */
-                                new DefaultDrive(
-                                                m_drivetrainSystem,
-                                                () -> -m_driverJoystickA.getY(),
-                                                () -> -m_driverJoystickA.getX(),
-                                                () -> m_driverJoystickA.getZ())
+        // Map the autonomous commands to the different options in the chooser of the
+        // dashboard
+        mapAutonCommands();
 
-                );
-
-                m_armSystem.setDefaultCommand(
-                                /**
-                                 * Control the angle of the arm with the second joystick.
-                                 */
-                                new DefaultArmLift(
-                                                m_armSystem,
-                                                () -> -m_driverJoystickB.getY()));
-        }
-
-        /**
-         * Use this method to define your trigger->command mappings. Triggers can be
-         * created via the
-         * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-         * an arbitrary
-         * predicate, or via the named factories in {@link
-         * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-         * {@link
-         * CommandXboxController
-         * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-         * PS4} controllers or
-         * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-         * joysticks}.
-         */
-        private void configureBindings() {
-                /* Command to reverse drive direction by toggling a button on joystick A */
-                new JoystickButton(m_driverJoystickA.getHID(), OperatorConstants.kButton_Two)
-                                .onTrue(new ReverseDriveDirection(m_drivetrainSystem));
-
-                /* todo map 4 commands for the general presets, the 4 and 5 joystick buttons, and buttons 6 and 7 for the other two presets */
-
-                /*command one for high tower shooter preset, appending it to "4" joystick button */
-                new JoystickButton(m_driverJoystickA.getHID(), OperatorConstants.kButton_Four)
-                                .onTrue(new SetArmPosition(m_armSystem, ArmConstants.kArmAngle_ThrowHigh));
-                
-                /* command two for low tower shooter preset, appending to "5" joystick button */
-                new JoystickButton(m_driverJoystickA.getHID(), OperatorConstants.kButton_Five)
-                                .onTrue(new SetArmPosition(m_armSystem, ArmConstants.kArmAngle_ThrowLow));
-                
-                /* command three for start angle, appending to button 6 */
-                new JoystickButton(m_driverJoystickA.getHID(), OperatorConstants.kButton_Six)
-                                .onTrue(new SetArmPosition(m_armSystem, ArmConstants.kArmAngle_Start));
-
-                /* command four for intake arm angle apending to button 7 */
-                new JoystickButton(m_driverJoystickA.getHID(), OperatorConstants.kButton_Seven)
-                                .onTrue(new SetArmPosition(m_armSystem, ArmConstants.kArmAngle_Intake));
-
-
-                /*
-                 * Command to spin the intake wheels while holding a button down on joystick B
+        // Configure default commands
+        // Set default drive command to single-stick arcadge drive
+        m_drivetrainSystem.setDefaultCommand(
+                /**
+                 * Single-stick arcade command, with forward/backward
+                 * and turning controlled by different axes of the first joystick.
+                 * Speed control via the Z axis (dial at the base of the joystick).
                  */
-                new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Two)
-                                .whileTrue(new SpinIntake(m_intakeSystem));
-                
-                /*
-                 * Command to flip the intake wheel direction each time you press a certain button on joystick B 
-                 */
-                new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Three)
-                                .onTrue(new SwitchIntakeDirection(m_intakeSystem));
+                new DefaultDrive(
+                        m_drivetrainSystem,
+                        () -> -m_driverJoystickA.getY(),
+                        () -> -m_driverJoystickA.getX(),
+                        () -> m_driverJoystickA.getZ()));
 
-                /*
-                 * Command to spin the throwing wheels while holding down the trigger on
-                 * joystick B, while modulating the speed based on the joystick's Z axis (dial)
+        m_armSystem.setDefaultCommand(
+                /**
+                 * Control the angle of the arm with the second joystick.
                  */
-                new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Trigger)
-                                .whileTrue(new ThrowNote(m_throwerSystem, () -> m_driverJoystickB.getZ()));
-        }
+                new DefaultArmLift(
+                        m_armSystem,
+                        () -> -m_driverJoystickB.getY()));
+    }
 
-// side joysticks buttons are buttons 6 and 7
-        /**
-         * Use this to pass the autonomous command to the main {@link Robot} class.
-         *
-         * @return the command to run in autonomous
-         */
-        // TODO(malik): Implement an autonomous program
+    /* Convert a double value x from range [A_lo, A_hi] to its equivalent in range [B_lo, B_hi] */
+    double convertRanges(double x, double rangeA_Lo, double rangeA_Hi,
+            double rangeB_Lo, double rangeB_Hi) {
+        /* compute the offset value that x represents as a fraction of range A */
+        assert rangeA_Lo <= rangeA_Hi;
+        assert rangeB_Lo <= rangeB_Hi;
+
+        x = x / (rangeA_Hi - rangeA_Lo);
+        x = x * (rangeB_Hi - rangeB_Lo);
+        x = x + rangeB_Lo;
+        return x;
+    }
+
+    /**
+     * Use this method to define your trigger->command mappings. Triggers can be
+     * created via the
+     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+     * an arbitrary
+     * predicate, or via the named factories in {@link
+     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+     * {@link
+     * CommandXboxController
+     * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+     * PS4} controllers or
+     * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+     * joysticks}.
+     */
+    private void configureBindings() {
+        /* Command to reverse drive direction by toggling a button on joystick A */
+        new JoystickButton(m_driverJoystickA.getHID(), OperatorConstants.kButton_Two)
+                .onTrue(new ReverseDriveDirection(m_drivetrainSystem));
+
+
         /*
-         * public Command getAutonomousCommand() {
-         * // An example command will be run in autonomous
-         * // return Autos.exampleAuto(m_exampleSubsystem);
-         * ;
-         * }
+         * Command to spin the intake wheels while holding a button down on joystick B
          */
+        new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Two)
+                .whileTrue(new SpinIntake(m_intakeSystem));
+
+        /*
+         * Command to flip the intake wheel direction each time you press a certain
+         * button on joystick B
+         */
+        new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Three)
+                .onTrue(new SwitchIntakeDirection(m_intakeSystem));
+
+        /*
+         * Command to spin the throwing wheels while holding down the trigger on
+         * joystick B, while modulating the speed based on the joystick's Z axis (dial)
+         */
+        new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Trigger)
+                .whileTrue(new SpinThrowerWheels(m_throwerSystem));
+
+        /*
+         * Lifter control buttons:
+         * - Use the dial at the base of the joystick to control the lift power
+         * - Hold button 4 to raise the robot / pull the hook down
+         * - Hold button 6 to lower the robot / let the hook go up
+         */
+        new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Four)
+                .whileTrue(new RaiseRobot(
+                            m_lifterSystem,
+                            () -> {
+                                /* convert from Z axis values to 0 to 1 */
+                                double dialValue = m_driverJoystickB.getZ();
+                                double hookPower = (-1 * dialValue + 1) / 2;
+                                return hookPower;
+                            }));
+        new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Six)
+                .whileTrue(new LowerRobot(
+                            m_lifterSystem,
+                            () -> {
+                                /* convert from Z axis values to 0 to 1 */
+                                double dialValue = m_driverJoystickB.getZ();
+                                double hookPower = (-1 * dialValue + 1) / 2;
+                                return hookPower;
+                            }));
+    }
+
+    private void mapAutonCommands() {
+        AutonChooser.setDefaultAuton(AutonOption.DO_NOTHING);
+        AutonChooser.assignAutonCommand(AutonOption.DO_NOTHING, Commands.none());
+        AutonChooser.assignAutonCommand(AutonOption.LEAVE_STARTING_ZONE,
+                Autos.leaveStartingZone(m_drivetrainSystem));
+        AutonChooser.assignAutonCommand(AutonOption.THROW_NOTE,
+                Autos.throwNote(m_throwerSystem, m_intakeSystem));
+        AutonChooser.assignAutonCommand(AutonOption.SPEAKER_CENTER_NOTES,
+                Autos.scoreTwoNotesInSpeaker(m_drivetrainSystem, m_throwerSystem, m_intakeSystem, m_armSystem));
+    }           
+
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        // Read from the autonomous chooser via dashboard
+        return AutonChooser.getChosenAutonCmd();
+    }
 }

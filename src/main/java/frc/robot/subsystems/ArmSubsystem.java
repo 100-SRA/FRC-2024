@@ -4,10 +4,9 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import frc.robot.Constants.ArmConstants;
@@ -68,5 +67,12 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
         speed = speed * ArmConstants.kArmAngleSpeed; // modify speed based on max output constant
         m_armLiftMotor_Left.set(speed);
         m_armLiftMotor_Right.set(speed);
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+
+        builder.setSmartDashboardType("Arm Subsystem");
     }
 }
