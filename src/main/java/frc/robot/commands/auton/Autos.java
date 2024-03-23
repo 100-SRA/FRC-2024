@@ -39,7 +39,7 @@ public final class Autos {
         double kReturnDriveSpeed = 0.5; /* percentage of motor power */
 
         Command driveToNewNoteAndWait = Commands.sequence(
-                Commands.run(() -> arm.liftArm(-.3)).withTimeout(1.5), //WIP it still does not more the arm at the start
+                //Commands.run(() -> arm.liftArm(-.3)).withTimeout(1.5), //WIP it still does not more the arm at the start
                 driveXMeters(drive, kNoteRetrievalDriveSpeed, kNoteRetrievalDriveDistance),
                 new WaitCommand(kNoteIntakeWaitTime));
 
