@@ -178,8 +178,8 @@ public class RobotContainer {
         AutonChooser.assignAutonCommand(AutonOption.THROW_NOTE,
                 Autos.throwNote(m_throwerSystem, m_intakeSystem));
         AutonChooser.assignAutonCommand(AutonOption.SPEAKER_CENTER_NOTES,
-                Autos.scoreTwoNotesInSpeaker(m_drivetrainSystem, m_throwerSystem, m_intakeSystem));
-    }
+                Autos.scoreTwoNotesInSpeaker(m_drivetrainSystem, m_throwerSystem, m_intakeSystem, m_armSystem));
+    }           
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.

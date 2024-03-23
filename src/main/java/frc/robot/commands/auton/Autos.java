@@ -13,6 +13,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.ReverseDriveDirection;
 import frc.robot.commands.SpinIntake;
 import frc.robot.commands.ThrowNote;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteIntakeSubsystem;
 import frc.robot.subsystems.NoteThrowerSubsystem;
@@ -23,20 +24,22 @@ public final class Autos {
     // return Commands.sequence(subsystem.exampleMethodCommand(), new
     // ExampleCommand(subsystem));
     // }
-    
+
+
     public static Command throwNote(NoteThrowerSubsystem thrower,
             NoteIntakeSubsystem intake) {
         return ThrowNote.buildCommand(thrower, intake);
     }
 
     public static Command scoreTwoNotesInSpeaker(DriveSubsystem drive,
-            NoteThrowerSubsystem thrower, NoteIntakeSubsystem intake) {
+            NoteThrowerSubsystem thrower, NoteIntakeSubsystem intake, ArmSubsystem arm) {
         double kNoteRetrievalDriveDistance = 1.0; /* meters */
         double kNoteIntakeWaitTime = 0.5; /* seconds */
         double kNoteRetrievalDriveSpeed = 0.55; /* percentage of motor power */
         double kReturnDriveSpeed = 0.5; /* percentage of motor power */
 
         Command driveToNewNoteAndWait = Commands.sequence(
+                Commands.run(() -> arm.liftArm(-.3)).withTimeout(1.5), //WIP it still does not more the arm at the start
                 driveXMeters(drive, kNoteRetrievalDriveSpeed, kNoteRetrievalDriveDistance),
                 new WaitCommand(kNoteIntakeWaitTime));
 
@@ -79,5 +82,5 @@ public final class Autos {
 
     private Autos() {
         throw new UnsupportedOperationException("This is a utility class!");
-    }
+    } 
 }
