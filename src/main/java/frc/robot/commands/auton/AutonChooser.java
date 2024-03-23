@@ -11,8 +11,8 @@ public class AutonChooser {
     public enum AutonOption {
         DO_NOTHING("NOTHING"),
         LEAVE_STARTING_ZONE("LEAVE START ZONE"),
-        THROW_NOTE("1NOTES - SPKR CNTR"),
-        SPEAKER_CENTER_NOTES("2NOTES - SPKR CNTR"),
+        SPEAKER_CENTER_1NOTES("1NOTE-SPKR_CNTR"),
+        SPEAKER_CENTER_2NOTES("2NOTES-SPKR_CNTR"),
         Set_Arm_down("it is a test to set the arm down");
         
         public final String m_description;
