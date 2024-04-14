@@ -27,8 +27,9 @@ public final class Autos {
 
 
     public static Command throwNote(NoteThrowerSubsystem thrower,
-            NoteIntakeSubsystem intake) {
-        return ThrowNote.buildCommand(thrower, intake);
+            NoteIntakeSubsystem intake, ArmSubsystem arm  ) {
+                Commands.run(() -> arm.liftArm(-0.5), thrower).withTimeout(1.5);
+                        return ThrowNote.buildCommand(thrower, intake);
     }
 
     public static Command scoreOneNoteInSpeaker(
@@ -53,7 +54,7 @@ public final class Autos {
 
         // TODO: fix the two note auto to include arm lowering at the start
         Command driveToNewNoteAndWait = Commands.sequence(
-                Commands.run(() -> arm.liftArm(-.3)).withTimeout(1.5), //WIP it still does not more the arm at the start
+                //Commands.run(() -> arm.liftArm(-.3)).withTimeout(1.5), //WIP it still does not more the arm at the start
                 driveXMeters(drive, kNoteRetrievalDriveSpeed, kNoteRetrievalDriveDistance),
                 new WaitCommand(kNoteIntakeWaitTime));
 
