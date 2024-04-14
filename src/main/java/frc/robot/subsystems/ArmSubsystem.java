@@ -32,11 +32,11 @@ public class ArmSubsystem extends SubsystemBase {
         m_armLiftMotor_Right.set(speed);
     }
 
-    @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-        builder.addDoubleProperty("Arm Encoder", ()-> m_EncoderArm.getDistance(), null);
-        builder.setSmartDashboardType("Arm Subsystem");
-    }
+   // @Override
+    //public void initSendable(SendableBuilder builder) {
+     //   super.initSendable(builder);
+     //   builder.addDoubleProperty("Arm Encoder", ()-> m_EncoderArm.getDistance(), null);
+     //   builder.setSmartDashboardType("Arm Subsystem");
+    
     
 }
