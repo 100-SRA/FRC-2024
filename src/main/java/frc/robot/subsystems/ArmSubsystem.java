@@ -19,7 +19,7 @@ public class ArmSubsystem extends SubsystemBase {
             MotorType.kBrushless);
     public final CANSparkMax m_armLiftMotor_Right = new CANSparkMax(ArmConstants.kCANid_ArmLift_R,
             MotorType.kBrushless);
-
+    
     public ArmSubsystem() {
         // Arm lift motors are facing different directions so reverse one of them
         m_armLiftMotor_Right.setInverted(true);

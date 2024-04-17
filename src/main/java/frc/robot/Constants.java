@@ -70,7 +70,7 @@ public final class Constants {
     public static final int kCANid_ArmLift_R = 1;
 
     /* Arm speed */
-    public static final double kArmAngleSpeed = 4;
+    public static final double kArmAngleSpeed = 1;
   }
 
   public static class NoteThrowerConstants {

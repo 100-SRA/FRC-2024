@@ -36,8 +36,8 @@ public final class Autos {
             NoteThrowerSubsystem thrower,
             NoteIntakeSubsystem intake,
             ArmSubsystem arm) {
-        double kArmLoweringDuration = 2; /* seconds */
-        double kArmLoweringPower = -0.5; /* motor power from -1 to 1 */
+        double kArmLoweringDuration = 2.8; /* seconds */
+        double kArmLoweringPower = -0.15; /* motor power from -1 to 1 */
         return Commands.sequence(
             Commands.run(() -> arm.liftArm(kArmLoweringPower), arm)
                 .withTimeout(kArmLoweringDuration),
