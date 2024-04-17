@@ -3,9 +3,9 @@
 This repo stores the 100 SRA's FRC robot code for the 2024 game season. Good luck to all teams!
 
 ## Team Members
-- caleb
-- kyte 
-- malik
+- Caleb
+- Kyte 
+- Malik
 - Julius
 - Thomas
 - David
