@@ -1,7 +1,11 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.NoteIntakeConstants;
 import frc.robot.Constants.NoteThrowerConstants;
 
 public class NoteThrowerSubsystem extends SubsystemBase {
@@ -10,13 +14,16 @@ public class NoteThrowerSubsystem extends SubsystemBase {
     // robot
     // private final CANSparkMax m_throwerWheelsMotor_Top = new
     // CANSparkMax(ArmConstants.kCANid_ThrowerWheels_Top, MotorType.kBrushed);
-    // private final CANSparkMax m_throwerWheelsMotor_Bottom = new
-    // CANSparkMax(ArmConstants.kCANid_ThrowerWheels_Bottom, MotorType.kBrushed);
-    private final PWMSparkMax m_throwerWheelsMotor_Top = new PWMSparkMax(
-            NoteThrowerConstants.kPortPWM_ThrowerWheels_Top);
-    private final PWMSparkMax m_throwerWheelsMotor_Bottom = new PWMSparkMax(
-            NoteThrowerConstants.kPortPWM_ThrowerWheels_Bottom);
-
+     //private final CANSparkMax m_throwerWheelsMotor_Bottom = new
+     //CANSparkMax(ArmConstants.kCANid_ThrowerWheels_Bottom, MotorType.kBrushed);
+    //private final PWMSparkMax m_throwerWheelsMotor_Top = new PWMSparkMax(
+            //NoteThrowerConstants.kPortPWM_ThrowerWheels_Top);
+    //private final PWMSparkMax m_throwerWheelsMotor_Bottom = new PWMSparkMax(
+           //NoteThrowerConstants.kPortPWM_ThrowerWheels_Bottom);
+    
+    private final CANSparkMax m_throwerWheelsMotor_Bottom = new CANSparkMax(NoteThrowerConstants.kCANid_ThrowerWheels_Top, MotorType.kBrushless);
+    private final CANSparkMax m_throwerWheelsMotor_Top = new CANSparkMax(NoteThrowerConstants.kCANid_ThrowerWheels_Bottom, MotorType.kBrushless);
+    
     /* Variable speed for better control of shooting */
     private double m_speed = 1.0;
 
