@@ -86,7 +86,7 @@ public final class Constants {
     public static final int kCANid_Intake = 3;
 
     /* Power of the note intake motor */
-    public static final double kIntakePower = 0.8;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+    public static final double kIntakePower = 0.8;                               
   }
 
   public static class LiftConstants {

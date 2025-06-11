@@ -142,7 +142,7 @@ public class RobotContainer {
          * joystick B, while modulating the speed based on the joystick's Z axis (dial)
          */
         new JoystickButton(m_driverJoystickB.getHID(), OperatorConstants.kButton_Trigger)
-                .whileTrue(new SpinThrowerWheels(m_throwerSystem));
+        .whileTrue(new SpinThrowerWheels(m_throwerSystem));
 
         /*
          * Lifter control buttons:
